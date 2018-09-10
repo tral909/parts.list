@@ -10,6 +10,7 @@ public class Part {
     }
 
     public Part(int id, String name, boolean required, int amount) {
+        this.id = id;
         this.name = name;
         this.required = required;
         this.amount = amount;
