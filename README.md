@@ -1,2 +1,2 @@
-# testtask
-testtask for internship from JR
+# parts.list
+test task for internship from JR

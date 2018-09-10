@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.infotecs.testtask</groupId>
+    <groupId>ru.javarush.internship</groupId>
     <artifactId>parts.list</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -12,6 +12,8 @@
     <properties>
         <spring.version>4.3.12.RELEASE</spring.version>
         <hibernate.version>5.3.3.Final</hibernate.version>
+        <jackson.version>2.9.6</jackson.version>
+        <jackson.mapper.asl.version>1.9.13</jackson.mapper.asl.version>
     </properties>
 
     <dependencies>
@@ -50,6 +52,16 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson.mapper.asl.version}</version>
+        </dependency>-->
     </dependencies>
 
     <build>
