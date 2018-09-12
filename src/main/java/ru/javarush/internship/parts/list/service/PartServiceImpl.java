@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javarush.internship.parts.list.dao.PartDao;
 import ru.javarush.internship.parts.list.model.Part;
-
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import ru.javarush.internship.parts.list.model.PartList;
 
 @Service
 public class PartServiceImpl implements PartService {
@@ -15,46 +12,22 @@ public class PartServiceImpl implements PartService {
     private PartDao partDao;
 
     public Part getPartById(int id) {
-        Part part = null;
-        try {
-            part = partDao.getPartById(id);
-        } catch (Exception e) {
-            Logger.getLogger(PartServiceImpl.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return part;
+        return partDao.getPartById(id);
     }
 
-    public void addPart(Part part) {
-        try {
-            partDao.addPart(part);
-        } catch (Exception e) {
-            Logger.getLogger(PartServiceImpl.class.getName()).log(Level.SEVERE, null, e);
-        }
+    public Part addPart(Part part) {
+        return partDao.addPart(part);
     }
 
-    public void updatePartById(int id, Part part) {
-        try {
-            partDao.updatePartById(id, part);
-        } catch (Exception e) {
-            Logger.getLogger(PartServiceImpl.class.getName()).log(Level.SEVERE, null, e);
-        }
+    public Part updatePartById(int id, Part part) {
+        return partDao.updatePartById(id, part);
     }
 
-    public void deletePartById(int id) {
-        try {
-            partDao.deletePartById(id);
-        } catch (Exception e) {
-            Logger.getLogger(PartServiceImpl.class.getName()).log(Level.SEVERE, null, e);
-        }
+    public int deletePartById(int id) {
+        return partDao.deletePartById(id);
     }
 
-    public List<Part> getPartList() {
-        List<Part> partList = null;
-        try {
-            partList = partDao.getPartList();
-        } catch (Exception e) {
-            Logger.getLogger(PartServiceImpl.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return partList;
+    public PartList getPartList() {
+        return partDao.getPartList();
     }
 }

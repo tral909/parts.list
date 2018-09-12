@@ -76,7 +76,7 @@
                     <username>tomcat</username>
                     <password>tomcat</password>
                     <update>true</update>
-                    <path>/partslist</path>
+                    <path>/</path>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,17 +1,16 @@
 package ru.javarush.internship.parts.list.service;
 
 import ru.javarush.internship.parts.list.model.Part;
-
-import java.util.List;
+import ru.javarush.internship.parts.list.model.PartList;
 
 public interface PartService {
     Part getPartById(int id);
 
-    void addPart(Part part);
+    Part addPart(Part part);
 
-    void updatePartById(int id, Part part);
+    Part updatePartById(int id, Part part);
 
-    void deletePartById(int id);
+    int deletePartById(int id);
 
-    List<Part> getPartList();
+    PartList getPartList();
 }

@@ -1,16 +1,18 @@
 package ru.javarush.internship.parts.list.dao;
 
-import ru.javarush.internship.parts.list.model.Part;
 import org.springframework.stereotype.Repository;
+import ru.javarush.internship.parts.list.model.Part;
+import ru.javarush.internship.parts.list.model.PartList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 public class PartDaoImpl implements PartDao {
-    private List<Part> mockPartList = new ArrayList<Part>(Arrays.asList(new Part(1, "Motherboard", true, 3),
+
+    private static List<Part> mockPartList = new ArrayList<Part>(Arrays.asList(
+            new Part(1, "Motherboard", true, 3),
             new Part(2, "Soundboard", false, 2),
             new Part(3, "Network adapter", false, 5),
             new Part(4, "CPU", true, 7),
@@ -18,32 +20,46 @@ public class PartDaoImpl implements PartDao {
             new Part(6, "Videocard", true, 2),
             new Part(7, "HDD", true, 8)));
 
-    public Part getPartById(int id) throws Exception {
-        checkId(id);
+    public Part getPartById(int id) {
+        //checkId(id);
+        return mockPartList.get(--id);
+    }
+
+    public Part addPart(Part part) {
+        int id = mockPartList.size();
+        part.setId(++id);
+        mockPartList.add(part);
+        return mockPartList.get(--id);
+    }
+
+    public Part updatePartById(int id, Part part) {
+        //checkId(id);
+        mockPartList.set(--id, part);
         return mockPartList.get(id);
     }
 
-    public void addPart(Part part) throws Exception {
-        mockPartList.add(part);
+    public int deletePartById(int id) {
+        //checkId(id);
+        mockPartList.remove(--id);
+        return id;
     }
 
-    public void updatePartById(int id, Part part) throws Exception {
-        checkId(id);
-        mockPartList.set(id, part);
+    public PartList getPartList() {
+        PartList partList = new PartList();
+        partList.setList(mockPartList);
+        int maxCanAssemblyComps = Integer.MAX_VALUE;
+        for (Part part : mockPartList) {
+            if (part.isRequired() && part.getAmount() < maxCanAssemblyComps) {
+                maxCanAssemblyComps = part.getAmount();
+            }
+        }
+        partList.setCanAssemblyComps(maxCanAssemblyComps);
+        return partList;
     }
 
-    public void deletePartById(int id) throws Exception {
-        checkId(id);
-        mockPartList.remove(id);
-    }
-
-    public List<Part> getPartList() throws Exception {
-        return mockPartList;
-    }
-
-    private void checkId(int id) throws NoSuchElementException {
+/*    private void checkId(int id) throws Exception {
         if (id < 0 || id >= mockPartList.size()) {
             throw new NoSuchElementException("No part with id = " + id);
         }
-    }
+    }*/
 }

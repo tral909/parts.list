@@ -1,17 +1,16 @@
 package ru.javarush.internship.parts.list.dao;
 
 import ru.javarush.internship.parts.list.model.Part;
-
-import java.util.List;
+import ru.javarush.internship.parts.list.model.PartList;
 
 public interface PartDao {
-    Part getPartById(int id) throws Exception;
+    Part getPartById(int id);
 
-    void addPart(Part part) throws Exception;
+    Part addPart(Part part);
 
-    void updatePartById(int id, Part part) throws Exception;
+    Part updatePartById(int id, Part part);
 
-    void deletePartById(int id) throws Exception;
+    int deletePartById(int id);
 
-    List<Part> getPartList() throws Exception;
+    PartList getPartList();
 }
