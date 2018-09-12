@@ -27,7 +27,7 @@ public class PartServiceImpl implements PartService {
         return partDao.deletePartById(id);
     }
 
-    public PartList getPartList() {
-        return partDao.getPartList();
+    public PartList getPartList(Integer page, Integer size) {
+        return partDao.getPartList(page, size);
     }
 }

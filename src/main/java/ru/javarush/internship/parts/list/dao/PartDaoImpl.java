@@ -4,9 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.javarush.internship.parts.list.model.Part;
 import ru.javarush.internship.parts.list.model.PartList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class PartDaoImpl implements PartDao {
@@ -44,8 +42,10 @@ public class PartDaoImpl implements PartDao {
         return id;
     }
 
-    public PartList getPartList() {
+    public PartList getPartList(Integer page, Integer size) {
         PartList partList = new PartList();
+
+        //create num of canAssemblyComps
         partList.setList(mockPartList);
         int maxCanAssemblyComps = Integer.MAX_VALUE;
         for (Part part : mockPartList) {
@@ -54,7 +54,30 @@ public class PartDaoImpl implements PartDao {
             }
         }
         partList.setCanAssemblyComps(maxCanAssemblyComps);
+
+        //pagination implementation
+        if (size == null || size < 1 || mockPartList.size() > 10) {
+            size = 10;
+        } else {
+            size = mockPartList.size();
+        }
+        List<List<Part>> paginatedData = getPages(mockPartList, size);
+        if (page == null || page < 1 || page > paginatedData.size()) {
+            page = 1;
+        }
+        partList.setList(paginatedData.get(--page));
         return partList;
+    }
+
+    private static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
+        if (c == null)
+            return Collections.emptyList();
+        List<T> list = new ArrayList<T>(c);
+        int numPages = (int) Math.ceil((double) list.size() / (double) pageSize);
+        List<List<T>> pages = new ArrayList<List<T>>(numPages);
+        for (int pageNum = 0; pageNum < numPages;)
+            pages.add(list.subList(pageNum * pageSize, Math.min(++pageNum * pageSize, list.size())));
+        return pages;
     }
 
 /*    private void checkId(int id) throws Exception {

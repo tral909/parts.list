@@ -12,5 +12,5 @@ public interface PartService {
 
     int deletePartById(int id);
 
-    PartList getPartList();
+    PartList getPartList(Integer page, Integer size);
 }
