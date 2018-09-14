@@ -8,6 +8,8 @@ import java.util.*;
 
 @Repository
 public class MockPartDaoImpl implements PartDao {
+    private static final String REQUIRED_TRUE = "yes";
+    private static final String REQUIRED_FALSE = "no";
 
     private static List<Part> mockPartList = new ArrayList<Part>(Arrays.asList(
             new Part(1, "Motherboard", true, 3),
@@ -19,7 +21,6 @@ public class MockPartDaoImpl implements PartDao {
             new Part(7, "HDD", true, 8)));
 
     public Part getPartById(int id) {
-        //checkId(id);
         return mockPartList.get(--id);
     }
 
@@ -31,26 +32,30 @@ public class MockPartDaoImpl implements PartDao {
     }
 
     public Part updatePartById(int id, Part part) {
-        //checkId(id);
         mockPartList.set(--id, part);
         return mockPartList.get(id);
     }
 
     public int deletePartById(int id) {
-        //checkId(id);
         mockPartList.remove(--id);
         return id;
     }
 
-    public PartList getPartList(Integer page, Integer size, String search) {
+    public PartList getPartList(Integer page, Integer size, String search, String required) {
         PartList partList = new PartList();
 
         //can assembly comps number
         int num = findOutMaxCompsNumber(partList);
         partList.setCanAssemblyComps(num);
 
+        //filter required
+        List<Part> requiredParts = mockPartList;
+        if (required != null && (required.equals(REQUIRED_TRUE) || required.equals(REQUIRED_FALSE))) {
+            requiredParts = filterParts(required);
+        }
+
         //search part
-        List<Part> searchedParts = mockPartList;
+        List<Part> searchedParts = requiredParts;
         if (search != null && !search.isEmpty()) {
             searchedParts = searchForParts(search);
         }
@@ -77,6 +82,24 @@ public class MockPartDaoImpl implements PartDao {
             }
         }
         return maxCanAssemblyComps;
+    }
+
+    private List<Part> filterParts(String required) {
+        List<Part> resultList = new ArrayList<>();
+        if (required.equals(REQUIRED_TRUE)) {
+            for (Part part : mockPartList) {
+                if (part.isRequired()){
+                    resultList.add(part);
+                }
+            }
+        } else {
+            for (Part part : mockPartList) {
+                if (!part.isRequired()){
+                    resultList.add(part);
+                }
+            }
+        }
+        return resultList;
     }
 
     private static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {

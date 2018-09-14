@@ -15,8 +15,9 @@ public class PartController {
     @RequestMapping(method = RequestMethod.GET)
     public PartList getPartList(@RequestParam(required = false) Integer page,
                                 @RequestParam(required = false) Integer size,
-                                @RequestParam(required = false) String search) {
-        return partService.getPartList(page, size, search);
+                                @RequestParam(required = false) String search,
+                                @RequestParam(required = false) String required) {
+        return partService.getPartList(page, size, search, required);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
