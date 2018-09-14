@@ -12,5 +12,5 @@ public interface PartDao {
 
     int deletePartById(int id);
 
-    PartList getPartList(Integer page, Integer size);
+    PartList getPartList(Integer page, Integer size, String search);
 }

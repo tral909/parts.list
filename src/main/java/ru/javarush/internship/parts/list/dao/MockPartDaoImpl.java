@@ -7,7 +7,7 @@ import ru.javarush.internship.parts.list.model.PartList;
 import java.util.*;
 
 @Repository
-public class PartDaoImpl implements PartDao {
+public class MockPartDaoImpl implements PartDao {
 
     private static List<Part> mockPartList = new ArrayList<Part>(Arrays.asList(
             new Part(1, "Motherboard", true, 3),
@@ -42,26 +42,25 @@ public class PartDaoImpl implements PartDao {
         return id;
     }
 
-    public PartList getPartList(Integer page, Integer size) {
+    public PartList getPartList(Integer page, Integer size, String search) {
         PartList partList = new PartList();
 
-        //create num of canAssemblyComps
-        partList.setList(mockPartList);
-        int maxCanAssemblyComps = Integer.MAX_VALUE;
-        for (Part part : mockPartList) {
-            if (part.isRequired() && part.getAmount() < maxCanAssemblyComps) {
-                maxCanAssemblyComps = part.getAmount();
-            }
-        }
-        partList.setCanAssemblyComps(maxCanAssemblyComps);
+        //can assembly comps number
+        int num = findOutMaxCompsNumber(partList);
+        partList.setCanAssemblyComps(num);
 
-        //pagination implementation
-        if (size == null || size < 1 || mockPartList.size() > 10) {
-            size = 10;
-        } else {
-            size = mockPartList.size();
+        //search part
+        List<Part> searchedParts = mockPartList;
+        if (search != null && !search.isEmpty()) {
+            searchedParts = searchForParts(search);
         }
-        List<List<Part>> paginatedData = getPages(mockPartList, size);
+        if (searchedParts.isEmpty()) {
+            partList.setList(new ArrayList<>());
+            return partList;
+        }
+
+        //pagination
+        List<List<Part>> paginatedData = getPages(searchedParts, size);
         if (page == null || page < 1 || page > paginatedData.size()) {
             page = 1;
         }
@@ -69,7 +68,21 @@ public class PartDaoImpl implements PartDao {
         return partList;
     }
 
+    private int findOutMaxCompsNumber(PartList partList) {
+        partList.setList(mockPartList);
+        int maxCanAssemblyComps = Integer.MAX_VALUE;
+        for (Part part : mockPartList) {
+            if (part.isRequired() && part.getAmount() < maxCanAssemblyComps) {
+                maxCanAssemblyComps = part.getAmount();
+            }
+        }
+        return maxCanAssemblyComps;
+    }
+
     private static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
+        if (pageSize == null || pageSize < 1 || mockPartList.size() > 10) {
+            pageSize = 10;
+        }
         if (c == null)
             return Collections.emptyList();
         List<T> list = new ArrayList<T>(c);
@@ -80,9 +93,13 @@ public class PartDaoImpl implements PartDao {
         return pages;
     }
 
-/*    private void checkId(int id) throws Exception {
-        if (id < 0 || id >= mockPartList.size()) {
-            throw new NoSuchElementException("No part with id = " + id);
+    private List<Part> searchForParts(String search) {
+        List<Part> resultList = new ArrayList<>();
+        for (Part part : mockPartList) {
+            if (part.getName().toLowerCase().contains(search.toLowerCase())) {
+                resultList.add(part);
+            }
         }
-    }*/
+        return resultList;
+    }
 }
