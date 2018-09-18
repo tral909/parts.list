@@ -32,16 +32,24 @@
             <td>{{part.name}}</td>
             <td>{{part.required}}</td>
             <td>{{part.amount}}</td>
-            <td><button ng-click="editPart(part)">Изменить</button></td>
-            <td><button ng-click="deletePart(part)">Удалить</button></td>
+            <td>
+                <button ng-click="editPart(part)">Изменить</button>
+            </td>
+            <td>
+                <button ng-click="deletePart(part)">Удалить</button>
+            </td>
         </script>
 
         <script type="text/ng-template" id="edit">
             <td><input type="text" ng-model="selectedPart.name" required/></td>
             <td><input type="checkbox" ng-model="selectedPart.required" required/></td>
-            <td><input type="number" min="0" max="1000" required ng-model="selectedPart.amount" /></td>
-            <td><button ng-click="savePart(part)">Сохранить</button></td>
-            <td><button ng-click="reset()">Отменить</button></td>
+            <td><input type="number" min="0" max="1000" required ng-model="selectedPart.amount"/></td>
+            <td>
+                <button ng-click="savePart(part)">Сохранить</button>
+            </td>
+            <td>
+                <button ng-click="reset()">Отменить</button>
+            </td>
         </script>
 
         <tr>
@@ -51,8 +59,8 @@
         </tr>
     </table>
     <div>
-        <button ng-click="backPaginate()">Назад</button>
-        <button ng-click="forwardPaginate()">Вперед</button>
+        <button ng-click="prevPage()">Назад</button>
+        <button ng-click="nextPage()">Вперед</button>
     </div>
     <form name="addForm">
         <p>Добавить наименование</p>

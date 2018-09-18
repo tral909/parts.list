@@ -2,20 +2,52 @@ var partslistApp = angular.module("partslistApp", []);
 
 partslistApp.controller("partsController", function ($scope, $http) {
     var baseUrl = "http://localhost:8080/parts";
+    var currentPage = 1;
+    var itemsPerPage = 5;
+    var paramsForPaginate = function(page, size) {
+        return "page=" + page + "&size=" + size;
+    };
 
     updateContent();
 
     $scope.selectedPart = {};
     $scope.partsList = {};
+    $scope.filterParam = "";
+
+    var numberOfPages = function(){
+        $http.get(baseUrl + "?required=" + $scope.filterParam).then(function success(response) {
+            allSize = response.data.parts.length;
+        });
+        return Math.ceil(allSize / itemsPerPage);
+    };
+
+    var allSize = numberOfPages();
+
+    $scope.prevPage = function() {
+        if (currentPage > 1)
+            currentPage--;
+        $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
+            $scope.partsList = response.data;
+        });
+    };
+
+    $scope.nextPage = function() {
+        if (currentPage < numberOfPages())
+            currentPage++;
+        $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
+            $scope.partsList = response.data;
+        });
+    };
 
     $scope.searchForName = function (searchParts) {
-        $http.get(baseUrl + "?search=" + searchParts.name).then(function success(response) {
+        $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage) + "&search=" + searchParts.name).then(function success(response) {
             $scope.partsList = response.data;
         })
     };
 
     $scope.filter = function (required) {
-        $http.get(baseUrl + "?required=" + required).then(function success(response) {
+        $scope.filterParam = required;
+        $http.get(baseUrl + "?required=" + $scope.filterParam + "&" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
             $scope.partsList = response.data;
         })
     };
@@ -61,8 +93,8 @@ partslistApp.controller("partsController", function ($scope, $http) {
     };
 
      function updateContent() {
-         $http.get(baseUrl).then(function success(response) {
+         $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
              $scope.partsList = response.data;
-        });
+         });
      }
 });

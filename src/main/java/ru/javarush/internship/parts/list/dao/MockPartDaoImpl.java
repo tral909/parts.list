@@ -115,8 +115,8 @@ public class MockPartDaoImpl implements PartDao {
     }
 
     private static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
-        if (pageSize == null || pageSize < 1 || mockPartList.size() > 10) {
-            pageSize = 10;
+        if (pageSize == null || pageSize < 1 || pageSize > mockPartList.size()) {
+            pageSize = mockPartList.size();
         }
         if (c == null)
             return Collections.emptyList();
