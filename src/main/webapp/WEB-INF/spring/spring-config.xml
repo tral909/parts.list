@@ -7,9 +7,10 @@
 
     <mvc:annotation-driven />
     <context:component-scan base-package="ru.javarush.internship.parts.list" />
-    <mvc:view-controller path="/" view-name="parts_page" />
+    <mvc:view-controller path="/" view-name="index" />
     <bean id="resolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/pages/" />
         <property name="suffix" value=".jsp" />
     </bean>
+    <mvc:resources mapping="/resources/**" location="/resources/"  />
 </beans>

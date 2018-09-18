@@ -11,14 +11,21 @@ public class MockPartDaoImpl implements PartDao {
     private static final String REQUIRED_TRUE = "yes";
     private static final String REQUIRED_FALSE = "no";
 
-    private static List<Part> mockPartList = new ArrayList<Part>(Arrays.asList(
+    private static List<Part> mockPartList = new ArrayList<>(Arrays.asList(
             new Part(1, "Motherboard", true, 3),
             new Part(2, "Soundboard", false, 2),
             new Part(3, "Network adapter", false, 5),
             new Part(4, "CPU", true, 7),
             new Part(5, "RAM", true, 4),
             new Part(6, "Videocard", true, 2),
-            new Part(7, "HDD", true, 8)));
+            new Part(7, "HDD", true, 8),
+            new Part(8, "SSD", true, 6),
+            new Part(9, "Cooler", true, 4),
+            new Part(10, "Mouse", false, 8),
+            new Part(11, "Keyboard", false, 5),
+            new Part(12, "Monitor", true, 5),
+            new Part(13, "Loudspeakers", false, 12),
+            new Part(14, "CD-ROM", false, 7)));
 
     public Part getPartById(int id) {
         return mockPartList.get(--id);
@@ -37,7 +44,12 @@ public class MockPartDaoImpl implements PartDao {
     }
 
     public int deletePartById(int id) {
-        mockPartList.remove(--id);
+        Iterator<Part> iterator = mockPartList.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getId() == id) {
+                iterator.remove();
+            }
+        }
         return id;
     }
 
@@ -81,7 +93,7 @@ public class MockPartDaoImpl implements PartDao {
                 maxCanAssemblyComps = part.getAmount();
             }
         }
-        return maxCanAssemblyComps;
+        return maxCanAssemblyComps == Integer.MAX_VALUE ? 0 : maxCanAssemblyComps;
     }
 
     private List<Part> filterParts(String required) {
@@ -108,9 +120,9 @@ public class MockPartDaoImpl implements PartDao {
         }
         if (c == null)
             return Collections.emptyList();
-        List<T> list = new ArrayList<T>(c);
+        List<T> list = new ArrayList<>(c);
         int numPages = (int) Math.ceil((double) list.size() / (double) pageSize);
-        List<List<T>> pages = new ArrayList<List<T>>(numPages);
+        List<List<T>> pages = new ArrayList<>(numPages);
         for (int pageNum = 0; pageNum < numPages;)
             pages.add(list.subList(pageNum * pageSize, Math.min(++pageNum * pageSize, list.size())));
         return pages;
