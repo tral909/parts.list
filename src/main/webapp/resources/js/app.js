@@ -3,19 +3,24 @@ var partslistApp = angular.module("partslistApp", []);
 partslistApp.controller("partsController", function ($scope, $http) {
     var baseUrl = "http://localhost:8080/parts";
     var currentPage = 1;
-    var itemsPerPage = 5;
-    var paramsForPaginate = function(page, size) {
+    var itemsPerPage = 10;
+    var commonParams = function (page, size) {
         return "page=" + page + "&size=" + size;
+    };
+    $scope.selectedPart = {};
+    $scope.partsList = {};
+    $scope.filterParam = "";
+    $scope.searchText = "";
+    var paramsForPaginate = function () {
+        return "required=" + $scope.filterParam + "&search=" +
+        $scope.searchText + "&" + commonParams(currentPage, itemsPerPage);
     };
 
     updateContent();
 
-    $scope.selectedPart = {};
-    $scope.partsList = {};
-    $scope.filterParam = "";
-
     var numberOfPages = function(){
-        $http.get(baseUrl + "?required=" + $scope.filterParam).then(function success(response) {
+        $http.get(baseUrl + "?required=" + $scope.filterParam + "&search=" +
+            $scope.searchText/*"?required=" + $scope.filterParam*/).then(function success(response) {
             allSize = response.data.parts.length;
         });
         return Math.ceil(allSize / itemsPerPage);
@@ -26,7 +31,7 @@ partslistApp.controller("partsController", function ($scope, $http) {
     $scope.prevPage = function() {
         if (currentPage > 1)
             currentPage--;
-        $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
+        $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
             $scope.partsList = response.data;
         });
     };
@@ -34,20 +39,25 @@ partslistApp.controller("partsController", function ($scope, $http) {
     $scope.nextPage = function() {
         if (currentPage < numberOfPages())
             currentPage++;
-        $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
+        $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
             $scope.partsList = response.data;
         });
     };
 
-    $scope.searchForName = function (searchParts) {
-        $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage) + "&search=" + searchParts.name).then(function success(response) {
+    $scope.searchForName = function () {
+        $http.get(baseUrl + "?" + paramsForPaginate()/*commonParams(currentPage, itemsPerPage) + "&search=" + $scope.searchText*/).then(function success(response) {
             $scope.partsList = response.data;
         })
     };
 
+    $scope.clearSearchText = function () {
+        $scope.searchText = "";
+        updateContent();
+    };
+
     $scope.filter = function (required) {
         $scope.filterParam = required;
-        $http.get(baseUrl + "?required=" + $scope.filterParam + "&" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
+        $http.get(baseUrl + "?" + paramsForPaginate()/*"?required=" + $scope.filterParam + "&" + commonParams(currentPage, itemsPerPage)*/).then(function success(response) {
             $scope.partsList = response.data;
         })
     };
@@ -66,8 +76,7 @@ partslistApp.controller("partsController", function ($scope, $http) {
     };
 
     $scope.savePart = function (part) {
-        $http.put(baseUrl + "/" + part.id, $scope.selectedPart).then(function success(response) {
-            //$scope.partsList.parts[--part.id] = response.data; //для мокДао, потом уберу ид из листа нафиг
+        $http.put(baseUrl + "/" + part.id, $scope.selectedPart).then(function success() {
             updateContent();
         });
         $scope.reset();
@@ -93,7 +102,7 @@ partslistApp.controller("partsController", function ($scope, $http) {
     };
 
      function updateContent() {
-         $http.get(baseUrl + "?" + paramsForPaginate(currentPage, itemsPerPage)).then(function success(response) {
+         $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
              $scope.partsList = response.data;
          });
      }

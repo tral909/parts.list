@@ -1,3 +1,40 @@
+h1 {
+    text-align: center;
+}
+
+.search {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.search input {
+    width: 40%;
+}
+
 input[type=number]{
-    width: 173px;
+    width: 178px;
+}
+
+input[type=checkbox], input[type=radio]{
+    margin: 0px 20px;
+}
+
+.left, .right {
+    margin: auto;
+}
+
+.center {
+    margin-top: 30px;
+}
+
+.content, th, td {
+    text-align: center;
+}
+
+.filters {
+    padding-left: 30%;
+}
+
+.addForm {
+    padding-left: 10%;
 }

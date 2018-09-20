@@ -32,9 +32,6 @@ public class PartController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Part updatePart(@PathVariable("id") int id, @RequestBody Part part) {
-        if (part.getId() != id) {
-            part.setId(id);
-        }
         return partService.updatePartById(id, part);
     }
 
