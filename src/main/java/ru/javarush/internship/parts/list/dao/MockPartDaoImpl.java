@@ -102,10 +102,6 @@ public class MockPartDaoImpl implements PartDao {
         } else {
             searchList = mockPartList;
         }
-/*        if (searchedParts.isEmpty()) {
-            partList.setList(new ArrayList<>());
-            return partList;
-        }*/
 
         //intersection
         if (filterList != mockPartList) resultList.retainAll(filterList);
