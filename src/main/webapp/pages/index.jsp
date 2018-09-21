@@ -71,7 +71,8 @@
                     <script type="text/ng-template" id="edit">
                         <td><input class="form-control" type="text" ng-model="selectedPart.name" required/></td>
                         <td><input type="checkbox" ng-model="selectedPart.required" required/></td>
-                        <td><input class="form-control" type="number" min="0" max="1000" required ng-model="selectedPart.amount"/></td>
+                        <td><input class="form-control" type="number" min="0" max="1000" required
+                                   ng-model="selectedPart.amount"/></td>
                         <td>
                             <button class="btn btn-success" ng-click="savePart(part)">Сохранить</button>
                         </td>
@@ -93,12 +94,11 @@
             </div>
         </div>
         <div class="col right">
-            <form class="addForm">
-
-                <div class="container">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="input-group">
+            <div class="container">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="input-group">
+                            <form name="addForm">
                                 <h5>Добавить наименование</h5>
                                 <p><input class="form-control" type="text" ng-model="newPart.name" required
                                           placeholder="Наименование"/></p>
@@ -106,14 +106,15 @@
                                           ng-model="newPart.amount" required placeholder="Количество"/>
                                 </p>
                                 <p><label>Необходимость<input type="checkbox" ng-model="newPart.required"/></label></p>
-                                <button type="submit" class="btn btn-primary" ng-click="addPart(newPart, addForm)">
+                                <button type="submit" class="btn btn-primary" ng-click="addPart(addForm)">
                                     Добавить
                                 </button>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
 </div>

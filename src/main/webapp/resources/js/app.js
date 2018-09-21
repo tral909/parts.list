@@ -87,9 +87,9 @@ partslistApp.controller("partsController", function ($scope, $http) {
     };
     //end edit part
 
-    $scope.addPart = function (newPart, addForm) {
+    $scope.addPart = function (addForm) {
         if (addForm.$valid) {
-            $http.post(baseUrl, newPart).then(function success() {
+            $http.post(baseUrl, $scope.newPart).then(function success() {
                 updateContent();
             })
         }
