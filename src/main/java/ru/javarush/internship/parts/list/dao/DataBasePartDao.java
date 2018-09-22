@@ -49,9 +49,9 @@ public class DataBasePartDao implements PartDao {
     public PartList getPartList(Integer page, Integer size, String search, String required) {
         Session session = sessionFactory.getCurrentSession();
         PartList partList = new PartList();
-        List<Part> list = session.createQuery("FROM part").list();
+        List<Part> list = session.createQuery("FROM test.part").list();
         partList.setList(list);
-        Query query = session.createQuery("SELECT min(amount) FROM part WHERE required = 1");
+        Query query = session.createQuery("SELECT min(test.part.amount) FROM test.part WHERE test.part.required = 1");
         int min = (int) query.getSingleResult();
         partList.setCanAssemblyComps(min);
         return partList;

@@ -5,18 +5,18 @@ import org.hibernate.annotations.Proxy;
 import javax.persistence.*;
 
 @Entity
-//@Table(name = "part")
+@Table(name = "part")
 @Proxy(lazy = false)
 public class Part implements Cloneable {
     @Id
-//    @Column(name = "id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-//    @Column(name = "name")
+    @Column(name = "name")
     private String name;
-//    @Column(name = "required")
+    @Column(name = "required")
     private boolean required;
-//    @Column(name = "amount")
+    @Column(name = "amount")
     private int amount;
 
     public Part() {
