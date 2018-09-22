@@ -1,14 +1,13 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html ng-app="partslistApp">
 <head>
     <title>Parts List</title>
-    <link rel="stylesheet" href="/resources/css/mystyles.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mystyles.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="/resources/js/app.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 </head>
 <body ng-controller="partsController">
 <div class="container-fluid">

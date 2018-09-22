@@ -1,7 +1,7 @@
 var partslistApp = angular.module("partslistApp", []);
 
-partslistApp.controller("partsController", function ($scope, $http) {
-    var baseUrl = "http://localhost:8080/parts";
+partslistApp.controller("partsController", function ($scope, $http, $location) {
+    var baseUrl = $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/parts";
     var currentPage = 1;
     var itemsPerPage = 10;
     var commonParams = function (page, size) {
