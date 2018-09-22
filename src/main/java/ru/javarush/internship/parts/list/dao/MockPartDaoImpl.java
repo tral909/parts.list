@@ -6,7 +6,7 @@ import ru.javarush.internship.parts.list.model.PartList;
 
 import java.util.*;
 
-@Repository
+@Repository("mockDao")
 public class MockPartDaoImpl implements PartDao {
     private static final String REQUIRED_TRUE = "yes";
     private static final String REQUIRED_FALSE = "no";
@@ -57,7 +57,7 @@ public class MockPartDaoImpl implements PartDao {
         return mockPartList.get(id);
     }
 
-    public int deletePartById(int id) {
+    public void deletePartById(int id) {
         Iterator<Part> iterator = mockPartList.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().getId() == id) {
@@ -68,7 +68,6 @@ public class MockPartDaoImpl implements PartDao {
                 }
             }
         }
-        return id;
     }
 
     public PartList getPartList(Integer page, Integer size, String search, String required) {

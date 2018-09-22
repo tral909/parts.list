@@ -36,7 +36,7 @@ public class PartController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public int deletePart(@PathVariable("id") int id) {
-        return partService.deletePartById(id);
+    public void deletePart(@PathVariable("id") int id) {
+        partService.deletePartById(id);
     }
 }

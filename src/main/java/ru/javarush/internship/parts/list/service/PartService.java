@@ -10,7 +10,7 @@ public interface PartService {
 
     Part updatePartById(int id, Part part);
 
-    int deletePartById(int id);
+    void deletePartById(int id);
 
     PartList getPartList(Integer page, Integer size, String search, String required);
 }

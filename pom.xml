@@ -13,7 +13,7 @@
         <spring.version>4.3.12.RELEASE</spring.version>
         <hibernate.version>5.3.3.Final</hibernate.version>
         <jackson.version>2.9.6</jackson.version>
-        <jackson.mapper.asl.version>1.9.13</jackson.mapper.asl.version>
+        <mysql.connector>6.0.6</mysql.connector>
     </properties>
 
     <dependencies>
@@ -43,6 +43,16 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
@@ -53,14 +63,19 @@
             <version>${hibernate.version}</version>
         </dependency>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <!--<dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>${jackson.mapper.asl.version}</version>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson.version}</version>
         </dependency>-->
     </dependencies>
 
@@ -68,15 +83,12 @@
         <finalName>parts.list</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
-                    <url>http://localhost:8080/manager/text</url>
-                    <username>tomcat</username>
-                    <password>tomcat</password>
-                    <update>true</update>
-                    <path>/</path>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
