@@ -36,6 +36,6 @@ public class PartServiceImpl implements PartService {
 
     @Transactional
     public PartList getPartList(Integer page, Integer size, String search, String required) {
-        return partDao.getPartList(page, size, search, required);
+        return partDao.getPartList(page, size, search.trim(), required.trim());
     }
 }

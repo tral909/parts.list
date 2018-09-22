@@ -12,6 +12,9 @@ import java.util.List;
 
 @Repository("databaseDao")
 public class DataBasePartDao implements PartDao {
+    private static final String REQUIRED_TRUE = "true";
+    private static final String REQUIRED_FALSE = "false";
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -49,11 +52,50 @@ public class DataBasePartDao implements PartDao {
     public PartList getPartList(Integer page, Integer size, String search, String required) {
         Session session = sessionFactory.getCurrentSession();
         PartList partList = new PartList();
-        List<Part> list = session.createQuery("FROM Part").list();
-        partList.setList(list);
-        Query query = session.createQuery("SELECT min(Part.amount) FROM Part WHERE Part.required = true");
-        int min = (int) query.getSingleResult();
+
+        //search and filter
+        Query filAndSearQuery = getFilterAndSearchQuery(session, search, required);
+        List<Part> parts = filAndSearQuery.list();
+
+        //paginate
+        Query pagQuery = getPaginatedQuery(filAndSearQuery, page, size, parts);
+        partList.setList(pagQuery.list());
+
+        //how much comps ca assembly
+        Query queryForAssemblyComps = session.createQuery("SELECT min(amount) FROM Part WHERE required = true");
+        int min = (int) queryForAssemblyComps.getSingleResult();
         partList.setCanAssemblyComps(min);
+
         return partList;
+    }
+
+    private Query getFilterAndSearchQuery(Session session, String search, String required) {
+        Query query = null;
+        if ((search == null || search.isEmpty()) && (required == null || required.isEmpty())) {
+            query = session.createQuery("FROM Part");
+        } else if ((search == null || search.isEmpty()) && (required.equals(REQUIRED_TRUE) || required.equals(REQUIRED_FALSE))) {
+            query = session.createQuery("FROM Part WHERE required = :req");
+            query.setParameter("req", Boolean.valueOf(required));
+        } else if (required == null || required.isEmpty()) {
+            query = session.createQuery("FROM Part WHERE name LIKE :sbstring");
+            query.setParameter("sbstring", "%" + search + "%");
+        } else if ((search != null || !search.isEmpty()) && (required.equals(REQUIRED_TRUE) || required.equals(REQUIRED_FALSE))) {
+            query = session.createQuery("FROM Part WHERE required = :req AND name LIKE :sbstring");
+            query.setParameter("req", Boolean.valueOf(required));
+            query.setParameter("sbstring", "%" + search + "%");
+        }
+        return query;
+    }
+
+    private Query getPaginatedQuery(Query query, Integer page, Integer size, List<Part> parts) {
+        if (size == null || size < 1 || size > parts.size()) {
+            size = parts.size();
+        }
+        if (page == null || page < 1 || page > parts.size()) {
+            page = 1;
+        }
+        query.setFirstResult((page - 1) * size);
+        query.setMaxResults(size);
+        return query;
     }
 }

@@ -1,4 +1,4 @@
-h1 {
+h1, table {
     text-align: center;
 }
 
@@ -15,14 +15,18 @@ input[type=checkbox], input[type=radio]{
 }
 
 .left, .right {
-    margin: auto;
+    margin: 15% 0;
 }
 
 .center {
     margin-top: 10px;
 }
 
-table, .pagin-btn {
+.footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     text-align: center;
 }
 

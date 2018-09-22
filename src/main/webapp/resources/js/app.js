@@ -20,8 +20,8 @@ partslistApp.controller("partsController", function ($scope, $http) {
 
     var numberOfPages = function(){
         $http.get(baseUrl + "?required=" + $scope.filterParam + "&search=" +
-            $scope.searchText/*"?required=" + $scope.filterParam*/).then(function success(response) {
-            allSize = response.data.parts.length;
+            $scope.searchText).then(function success(response) {
+                allSize = response.data.parts.length;
         });
         return Math.ceil(allSize / itemsPerPage);
     };
@@ -45,7 +45,8 @@ partslistApp.controller("partsController", function ($scope, $http) {
     };
 
     $scope.searchForName = function () {
-        $http.get(baseUrl + "?" + paramsForPaginate()/*commonParams(currentPage, itemsPerPage) + "&search=" + $scope.searchText*/).then(function success(response) {
+        currentPage = 1;
+        $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
             $scope.partsList = response.data;
         })
     };
@@ -57,7 +58,8 @@ partslistApp.controller("partsController", function ($scope, $http) {
 
     $scope.filter = function (required) {
         $scope.filterParam = required;
-        $http.get(baseUrl + "?" + paramsForPaginate()/*"?required=" + $scope.filterParam + "&" + commonParams(currentPage, itemsPerPage)*/).then(function success(response) {
+        currentPage = 1;
+        $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
             $scope.partsList = response.data;
         })
     };

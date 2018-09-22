@@ -17,9 +17,9 @@
             <div class="filters">
                 <p><label><input type="radio" name="filter" ng-model="required" value="" ng-click="filter(required)"/>Все</label>
                 </p>
-                <p><label><input type="radio" name="filter" ng-model="required" value="yes"
+                <p><label><input type="radio" name="filter" ng-model="required" value="true"
                                  ng-click="filter(required)"/>Только обязательные</label></p>
-                <p><label><input type="radio" name="filter" ng-model="required" value="no" ng-click="filter(required)"/>Только
+                <p><label><input type="radio" name="filter" ng-model="required" value="false" ng-click="filter(required)"/>Только
                     необязательные</label></p>
             </div>
         </div>
@@ -80,14 +80,9 @@
                             <button class="btn btn-warning" ng-click="reset()">Отменить</button>
                         </td>
                     </script>
-
-                    <tr>
-                        <td colspan="2">Можно собрать</td>
-                        <td ng-bind="partsList.canAssemblyComps">{{partsList.canAssemblyComps}}</td>
-                        <td colspan="2">компьютеров</td>
-                    </tr>
                 </table>
-                <div class="pagin-btn">
+                <div class="footer">
+                    <p>Можно собрать компьютеров: <span ng-bind="partsList.canAssemblyComps">{{partsList.canAssemblyComps}}</span></p>
                     <button class="btn btn-info" ng-click="prevPage()">Назад</button>
                     <button class="btn btn-info" ng-click="nextPage()">Вперед</button>
                 </div>

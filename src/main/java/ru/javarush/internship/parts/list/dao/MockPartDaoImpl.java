@@ -8,8 +8,8 @@ import java.util.*;
 
 @Repository("mockDao")
 public class MockPartDaoImpl implements PartDao {
-    private static final String REQUIRED_TRUE = "yes";
-    private static final String REQUIRED_FALSE = "no";
+    private static final String REQUIRED_TRUE = "true";
+    private static final String REQUIRED_FALSE = "false";
 
     private static List<Part> mockPartList = new ArrayList<>(Arrays.asList(
             new Part(0, "Motherboard", true, 3),
