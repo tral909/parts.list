@@ -18,29 +18,32 @@ partslistApp.controller("partsController", function ($scope, $http, $location) {
 
     updateContent();
 
-    var numberOfPages = function(){
+    var numberOfPages = function(callback) {
         $http.get(baseUrl + "?required=" + $scope.filterParam + "&search=" +
             $scope.searchText).then(function success(response) {
-                allSize = response.data.parts.length;
-        });
-        return Math.ceil(allSize / itemsPerPage);
+                if (callback && typeof callback === "function") {
+                    callback(Math.ceil(response.data.parts.length / itemsPerPage));
+                }
+            });
     };
 
-    var allSize = numberOfPages();
-
     $scope.prevPage = function() {
-        if (currentPage > 1)
+        if (currentPage > 1) {
             currentPage--;
+        }
         $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
             $scope.partsList = response.data;
         });
     };
 
     $scope.nextPage = function() {
-        if (currentPage < numberOfPages())
-            currentPage++;
-        $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
-            $scope.partsList = response.data;
+        numberOfPages(function (allSize) {
+            if (currentPage < allSize) {
+                currentPage++;
+            }
+            $http.get(baseUrl + "?" + paramsForPaginate()).then(function success(response) {
+                $scope.partsList = response.data;
+            });
         });
     };
 
