@@ -9,32 +9,28 @@ import ru.javarush.internship.parts.list.model.Part;
 import ru.javarush.internship.parts.list.model.PartList;
 
 @Service
+@Transactional
 public class PartServiceImpl implements PartService {
     @Autowired
     @Qualifier("databaseDao")
     private PartDao partDao;
 
-    @Transactional
     public Part getPartById(int id) {
         return partDao.getPartById(id);
     }
 
-    @Transactional
     public Part addPart(Part part) {
         return partDao.addPart(part);
     }
 
-    @Transactional
     public Part updatePartById(int id, Part part) {
         return partDao.updatePartById(id, part);
     }
 
-    @Transactional
     public void deletePartById(int id) {
         partDao.deletePartById(id);
     }
 
-    @Transactional
     public PartList getPartList(Integer page, Integer size, String search, String required) {
         if (search != null) {
             search = search.trim();
