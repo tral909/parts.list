@@ -71,20 +71,20 @@ public class MockPartDaoImpl implements PartDao {
     }
 
     public PartList getPartList(Integer page, Integer size, String search, String required) {
-        PartList partList = new PartList();
+        PartList resultList = new PartList();
 
-        List<Part> resultList = new ArrayList<>();
+        List<Part> clonedList = new ArrayList<>();
         try {
             for (Part part : mockPartList) {
-                resultList.add((Part) part.clone());
+                clonedList.add((Part) part.clone());
             }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
 
         //can assembly comps number
-        int num = findOutMaxCompsNumber(partList);
-        partList.setCanAssemblyComps(num);
+        int num = findOutMaxCompsNumber(resultList);
+        resultList.setCanAssemblyComps(num);
 
         //filter required
         List<Part> filterList = new ArrayList<>();
@@ -103,20 +103,20 @@ public class MockPartDaoImpl implements PartDao {
         }
 
         //intersection
-        if (filterList != mockPartList) resultList.retainAll(filterList);
-        if (searchList != mockPartList) resultList.retainAll(searchList);
+        if (filterList != mockPartList) clonedList.retainAll(filterList);
+        if (searchList != mockPartList) clonedList.retainAll(searchList);
 
         //pagination
-        List<List<Part>> paginatedData = getPages(resultList, size);
+        List<List<Part>> paginatedData = getPages(clonedList, size);
         if (page == null || page < 1 || page > paginatedData.size()) {
             page = 1;
         }
         if (paginatedData.isEmpty()) {
-            partList.setList(new ArrayList<>());
+            resultList.setList(new ArrayList<>());
         } else {
-            partList.setList(paginatedData.get(--page));
+            resultList.setList(paginatedData.get(--page));
         }
-        return partList;
+        return resultList;
     }
 
     private int findOutMaxCompsNumber(PartList partList) {
@@ -131,17 +131,10 @@ public class MockPartDaoImpl implements PartDao {
     }
 
     private void fetchFilteredParts(String required, List<Part> resultList) {
-        if (required.equals(REQUIRED_TRUE)) {
-            for (Part part : mockPartList) {
-                if (part.isRequired()){
-                    resultList.add(part);
-                }
-            }
-        } else {
-            for (Part part : mockPartList) {
-                if (!part.isRequired()){
-                    resultList.add(part);
-                }
+        boolean isRequired = Boolean.valueOf(required);
+        for (Part part : mockPartList) {
+            if (isRequired == part.isRequired()){
+                resultList.add(part);
             }
         }
     }
