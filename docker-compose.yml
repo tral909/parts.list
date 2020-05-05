@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    container_name: parts.list-mysql
+    #restart: always
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./src/main/resources/${INIT_SCRIPT}:/docker-entrypoint-initdb.d/${INIT_SCRIPT}
+    #ports: # не зачем открывать порт наружу, обращаемся сюда через 'db' хостнейм
+    #  - "3306:3306"
+
+  web:
+    image: tomcat:9.0-jre8-slim
+    container_name: parts.list-tomcat
+    volumes:
+      - ./target/${APP_NAME}:/usr/local/tomcat/webapps/${APP_NAME}
+    ports:
+      - "8888:8080"
+    #links:
+    #  - "db:localhost" #1 или 2 хостнейм
+    depends_on:
+      - db

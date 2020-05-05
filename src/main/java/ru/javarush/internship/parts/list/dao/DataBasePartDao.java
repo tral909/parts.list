@@ -61,7 +61,7 @@ public class DataBasePartDao implements PartDao {
         Query pagQuery = getPaginatedQuery(filAndSearQuery, page, size, parts);
         partList.setList(pagQuery.list());
 
-        //how much comps ca assembly
+        //how much comps can assembly
         Query queryForAssemblyComps = session.createQuery("SELECT min(amount) FROM Part WHERE required = true");
         int min = (int) queryForAssemblyComps.getSingleResult();
         partList.setCanAssemblyComps(min);
