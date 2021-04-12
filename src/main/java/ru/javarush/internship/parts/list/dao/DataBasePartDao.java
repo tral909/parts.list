@@ -12,14 +12,11 @@ import java.util.List;
 
 @Repository("databaseDao")
 public class DataBasePartDao implements PartDao {
-    private static final String REQUIRED_TRUE = "true";
-    private static final String REQUIRED_FALSE = "false";
-
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public Part getPartById(int id) {
+    public Part getPartById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         return session.load(Part.class, id);
     }
@@ -33,14 +30,14 @@ public class DataBasePartDao implements PartDao {
     }
 
     @Override
-    public Part updatePartById(int id, Part part) {
+    public Part updatePartById(Long id, Part part) {
         Session session = sessionFactory.getCurrentSession();
         session.update(part);
         return part;
     }
 
     @Override
-    public void deletePartById(int id) {
+    public void deletePartById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Part part = session.load(Part.class, id);
         if (part != null) {
@@ -49,17 +46,17 @@ public class DataBasePartDao implements PartDao {
     }
 
     @Override
-    public PartList getPartList(Integer page, Integer size, String search, String required) {
+    public PartList getPartsList(Integer page, Integer size, String search, Boolean required) {
         Session session = sessionFactory.getCurrentSession();
         PartList partList = new PartList();
 
         //search and filter
-        Query filAndSearQuery = getFilterAndSearchQuery(session, search, required);
-        List<Part> parts = filAndSearQuery.list();
+        Query query = buildQuery(session, search, required);
+        List<Part> parts = query.list();
 
         //paginate
-        Query pagQuery = getPaginatedQuery(filAndSearQuery, page, size, parts);
-        partList.setList(pagQuery.list());
+        Query paginatedQuery = addPaginationToQuery(query, page, size, parts);
+        partList.setList(paginatedQuery.list());
 
         //how much comps can assembly
         Query queryForAssemblyComps = session.createQuery("SELECT min(amount) FROM Part WHERE required = true");
@@ -69,25 +66,26 @@ public class DataBasePartDao implements PartDao {
         return partList;
     }
 
-    private Query getFilterAndSearchQuery(Session session, String search, String required) {
-        Query query = null;
-        if ((search == null || search.isEmpty()) && (required == null || required.isEmpty())) {
+    // todo refactor using stringbuilder
+    private Query buildQuery(Session session, String search, Boolean required) {
+        Query query;
+        if ((search == null || search.isEmpty()) && required == null) {
             query = session.createQuery("FROM Part");
-        } else if ((search == null || search.isEmpty()) && (required.equals(REQUIRED_TRUE) || required.equals(REQUIRED_FALSE))) {
+        } else if (search == null || search.isEmpty()) {
             query = session.createQuery("FROM Part WHERE required = :req");
-            query.setParameter("req", Boolean.valueOf(required));
-        } else if (required == null || required.isEmpty()) {
+            query.setParameter("req", required);
+        } else if (required == null) {
             query = session.createQuery("FROM Part WHERE name LIKE :sbstring");
             query.setParameter("sbstring", "%" + search + "%");
-        } else if ((search != null || !search.isEmpty()) && (required.equals(REQUIRED_TRUE) || required.equals(REQUIRED_FALSE))) {
+        } else {
             query = session.createQuery("FROM Part WHERE required = :req AND name LIKE :sbstring");
-            query.setParameter("req", Boolean.valueOf(required));
+            query.setParameter("req", required);
             query.setParameter("sbstring", "%" + search + "%");
         }
         return query;
     }
 
-    private Query getPaginatedQuery(Query query, Integer page, Integer size, List<Part> parts) {
+    private Query addPaginationToQuery(Query query, Integer page, Integer size, List<Part> parts) {
         if (size == null || size < 1 || size > parts.size()) {
             size = parts.size();
         }

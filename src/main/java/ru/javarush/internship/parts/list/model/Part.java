@@ -4,36 +4,36 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 
+//todo remove @Proxy, add PartDto
 @Entity
 @Table(name = "part")
 @Proxy(lazy = false)
 public class Part implements Cloneable {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "name")
+    private Long id;
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
-    @Column(name = "required")
+    @Column(name = "required", nullable = false)
     private boolean required;
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private int amount;
 
     public Part() {
     }
 
-    public Part(int id, String name, boolean required, int amount) {
+    public Part(Long id, String name, boolean required, int amount) {
         this.id = id;
         this.name = name;
         this.required = required;
         this.amount = amount;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -74,7 +74,7 @@ public class Part implements Cloneable {
 
         Part part = (Part) o;
 
-        if (id != part.id) return false;
+        if (!id.equals(part.id)) return false;
         if (required != part.required) return false;
         if (amount != part.amount) return false;
         return name.equals(part.name);
@@ -82,11 +82,11 @@ public class Part implements Cloneable {
 
     @Override
     public int hashCode() {
-        int result = id;
+        Long result = id;
         result = 31 * result + name.hashCode();
         result = 31 * result + (required ? 1 : 0);
         result = 31 * result + amount;
-        return result;
+        return result.intValue();
     }
 
 }

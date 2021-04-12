@@ -16,12 +16,12 @@ public class PartController {
     public PartList getPartList(@RequestParam(required = false) Integer page,
                                 @RequestParam(required = false) Integer size,
                                 @RequestParam(required = false) String search,
-                                @RequestParam(required = false) String required) {
+                                @RequestParam(required = false) Boolean required) {
         return partService.getPartList(page, size, search, required);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Part getPartById(@PathVariable("id") int id) {
+    public Part getPartById(@PathVariable("id") Long id) {
         return partService.getPartById(id);
     }
 
@@ -31,12 +31,12 @@ public class PartController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public Part updatePart(@PathVariable("id") int id, @RequestBody Part part) {
+    public Part updatePart(@PathVariable("id") Long id, @RequestBody Part part) {
         return partService.updatePartById(id, part);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deletePart(@PathVariable("id") int id) {
+    public void deletePart(@PathVariable("id") Long id) {
         partService.deletePartById(id);
     }
 }

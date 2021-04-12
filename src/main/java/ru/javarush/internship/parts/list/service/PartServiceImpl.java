@@ -15,7 +15,7 @@ public class PartServiceImpl implements PartService {
     @Qualifier("databaseDao")
     private PartDao partDao;
 
-    public Part getPartById(int id) {
+    public Part getPartById(Long id) {
         return partDao.getPartById(id);
     }
 
@@ -23,22 +23,19 @@ public class PartServiceImpl implements PartService {
         return partDao.addPart(part);
     }
 
-    public Part updatePartById(int id, Part part) {
+    public Part updatePartById(Long id, Part part) {
         return partDao.updatePartById(id, part);
     }
 
-    public void deletePartById(int id) {
+    public void deletePartById(Long id) {
         partDao.deletePartById(id);
     }
 
-    public PartList getPartList(Integer page, Integer size, String search, String required) {
+    public PartList getPartList(Integer page, Integer size, String search, Boolean required) {
         if (search != null) {
             search = search.trim();
         }
-        if (required != null) {
-            required = required.trim();
-        }
 
-        return partDao.getPartList(page, size, search, required);
+        return partDao.getPartsList(page, size, search, required);
     }
 }
