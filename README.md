@@ -24,7 +24,7 @@ $ docker-compose up -d
 ```
 stop and delete all artifacts
 ```
-$ docker-compose down --volimes
+$ docker-compose down --volumes
 ```
 open browser for **http://localhost:8888/parts.list/**
 ### run on localhost

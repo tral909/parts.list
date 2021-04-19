@@ -2,7 +2,13 @@ package ru.javarush.internship.parts.list.model;
 
 import org.hibernate.annotations.Proxy;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 //todo remove @Proxy, add PartDto
 @Entity
@@ -64,7 +70,7 @@ public class Part implements Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        return new Part(id, new String(name), required, amount);
+        return new Part(id, name, required, amount);
     }
 
     @Override

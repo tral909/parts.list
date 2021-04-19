@@ -15,6 +15,7 @@ public class PartServiceImpl implements PartService {
     @Qualifier("databaseDao")
     private PartDao partDao;
 
+    @Transactional(readOnly = true)
     public Part getPartById(Long id) {
         return partDao.getPartById(id);
     }
@@ -31,6 +32,7 @@ public class PartServiceImpl implements PartService {
         partDao.deletePartById(id);
     }
 
+    @Transactional(readOnly = true)
     public PartList getPartList(Integer page, Integer size, String search, Boolean required) {
         if (search != null) {
             search = search.trim();

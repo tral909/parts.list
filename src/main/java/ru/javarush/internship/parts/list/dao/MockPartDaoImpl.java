@@ -4,7 +4,12 @@ import org.springframework.stereotype.Repository;
 import ru.javarush.internship.parts.list.model.Part;
 import ru.javarush.internship.parts.list.model.PartList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 @Repository("mockDao")
 public class MockPartDaoImpl implements PartDao {
