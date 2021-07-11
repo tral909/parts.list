@@ -6,7 +6,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.javarush.internship.parts.list.model.Part;
-import ru.javarush.internship.parts.list.model.PartList;
 
 import java.util.List;
 
@@ -46,24 +45,27 @@ public class DataBasePartDao implements PartDao {
     }
 
     @Override
-    public PartList getPartsList(Integer page, Integer size, String search, Boolean required) {
+    public List<Part> filterParts(Integer page, Integer size, String search, Boolean required) {
         Session session = sessionFactory.getCurrentSession();
-        PartList partList = new PartList();
 
         //search and filter
+        //todo выбираем все запчасти, неправильно, надо переделать пагинацию
         Query query = buildQuery(session, search, required);
         List<Part> parts = query.list();
 
         //paginate
         Query paginatedQuery = addPaginationToQuery(query, page, size, parts);
-        partList.setList(paginatedQuery.list());
 
+        return paginatedQuery.list();
+    }
+
+    @Override
+    public int canAssemblyComps() {
         //how much comps can assembly
-        Query queryForAssemblyComps = session.createQuery("SELECT min(amount) FROM Part WHERE required = true");
-        int min = (int) queryForAssemblyComps.getSingleResult();
-        partList.setCanAssemblyComps(min);
-
-        return partList;
+        Session session = sessionFactory.getCurrentSession();
+        Query queryForAssemblyComps = session
+                .createQuery("SELECT min(amount) FROM Part WHERE required = true");
+        return (int) queryForAssemblyComps.getSingleResult();
     }
 
     // todo refactor using stringbuilder

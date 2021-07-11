@@ -1,7 +1,5 @@
 package ru.javarush.internship.parts.list.model;
 
-import org.hibernate.annotations.Proxy;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-//todo remove @Proxy, add PartDto
 @Entity
 @Table(name = "part")
-@Proxy(lazy = false)
 public class Part implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

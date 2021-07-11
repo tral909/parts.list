@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javarush.internship.parts.list.dao.PartDao;
+import ru.javarush.internship.parts.list.dto.PartDto;
+import ru.javarush.internship.parts.list.dto.PartListDto;
 import ru.javarush.internship.parts.list.model.Part;
-import ru.javarush.internship.parts.list.model.PartList;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,11 +37,16 @@ public class PartServiceImpl implements PartService {
     }
 
     @Transactional(readOnly = true)
-    public PartList getPartList(Integer page, Integer size, String search, Boolean required) {
+    public PartListDto filterParts(Integer page, Integer size, String search, Boolean required) {
         if (search != null) {
             search = search.trim();
         }
 
-        return partDao.getPartsList(page, size, search, required);
+        List<PartDto> partDtos = partDao.filterParts(page, size, search, required).stream()
+                .map(p -> new PartDto(p.getId(), p.getName(), p.isRequired(), p.getAmount()))
+                .collect(Collectors.toList());
+
+        int comps = partDao.canAssemblyComps();
+        return new PartListDto(partDtos, comps);
     }
 }

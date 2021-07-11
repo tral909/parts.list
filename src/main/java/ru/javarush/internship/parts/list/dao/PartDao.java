@@ -1,7 +1,8 @@
 package ru.javarush.internship.parts.list.dao;
 
 import ru.javarush.internship.parts.list.model.Part;
-import ru.javarush.internship.parts.list.model.PartList;
+
+import java.util.List;
 
 public interface PartDao {
     Part getPartById(Long id);
@@ -12,5 +13,7 @@ public interface PartDao {
 
     void deletePartById(Long id);
 
-    PartList getPartsList(Integer page, Integer size, String search, Boolean required);
+    List<Part> filterParts(Integer page, Integer size, String search, Boolean required);
+
+    int canAssemblyComps();
 }

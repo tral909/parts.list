@@ -2,7 +2,6 @@ package ru.javarush.internship.parts.list.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.javarush.internship.parts.list.model.Part;
-import ru.javarush.internship.parts.list.model.PartList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,8 +72,7 @@ public class MockPartDaoImpl implements PartDao {
         }
     }
 
-    public PartList getPartsList(Integer page, Integer size, String search, Boolean required) {
-        PartList resultList = new PartList();
+    public List<Part> filterParts(Integer page, Integer size, String search, Boolean required) {
 
         List<Part> clonedList = new ArrayList<>();
         try {
@@ -84,10 +82,6 @@ public class MockPartDaoImpl implements PartDao {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-
-        //can assembly comps number
-        int num = findOutMaxCompsNumber(resultList);
-        resultList.setCanAssemblyComps(num);
 
         //filter required
         List<Part> filterList = new ArrayList<>();
@@ -114,23 +108,19 @@ public class MockPartDaoImpl implements PartDao {
         if (page == null || page < 1 || page > paginatedData.size()) {
             page = 1;
         }
-        if (paginatedData.isEmpty()) {
-            resultList.setList(new ArrayList<>());
-        } else {
-            resultList.setList(paginatedData.get(--page));
-        }
-        return resultList;
+        return !paginatedData.isEmpty() ? paginatedData.get(--page) : new ArrayList<>();
     }
 
-    private int findOutMaxCompsNumber(PartList partList) {
-        partList.setList(mockPartsList);
+    @Override
+    public int canAssemblyComps() {
+        //can assembly comps number
         int maxCanAssemblyComps = Integer.MAX_VALUE;
         for (Part part : mockPartsList) {
             if (part.isRequired() && part.getAmount() < maxCanAssemblyComps) {
                 maxCanAssemblyComps = part.getAmount();
             }
         }
-        return maxCanAssemblyComps == Integer.MAX_VALUE ? 0 : maxCanAssemblyComps;
+        return maxCanAssemblyComps != Integer.MAX_VALUE ? maxCanAssemblyComps : 0;
     }
 
     private void fetchFilteredParts(Boolean required, List<Part> resultList) {

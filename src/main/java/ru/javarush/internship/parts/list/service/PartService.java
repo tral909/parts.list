@@ -1,7 +1,7 @@
 package ru.javarush.internship.parts.list.service;
 
 import ru.javarush.internship.parts.list.model.Part;
-import ru.javarush.internship.parts.list.model.PartList;
+import ru.javarush.internship.parts.list.dto.PartListDto;
 
 public interface PartService {
     Part getPartById(Long id);
@@ -12,5 +12,5 @@ public interface PartService {
 
     void deletePartById(Long id);
 
-    PartList getPartList(Integer page, Integer size, String search, Boolean required);
+    PartListDto filterParts(Integer page, Integer size, String search, Boolean required);
 }

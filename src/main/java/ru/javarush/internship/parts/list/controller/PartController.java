@@ -1,9 +1,14 @@
 package ru.javarush.internship.parts.list.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.javarush.internship.parts.list.model.Part;
-import ru.javarush.internship.parts.list.model.PartList;
+import ru.javarush.internship.parts.list.dto.PartListDto;
 import ru.javarush.internship.parts.list.service.PartService;
 
 @RestController
@@ -13,11 +18,11 @@ public class PartController {
     private PartService partService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public PartList getPartList(@RequestParam(required = false) Integer page,
-                                @RequestParam(required = false) Integer size,
-                                @RequestParam(required = false) String search,
-                                @RequestParam(required = false) Boolean required) {
-        return partService.getPartList(page, size, search, required);
+    public PartListDto filterParts(@RequestParam(required = false) Integer page,
+                                   @RequestParam(required = false) Integer size,
+                                   @RequestParam(required = false) String search,
+                                   @RequestParam(required = false) Boolean required) {
+        return partService.filterParts(page, size, search, required);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
